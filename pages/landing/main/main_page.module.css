@@ -1,0 +1,29 @@
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    align-items: center;
+    justify-content: center;
+    gap: 41px;
+    margin-bottom: 20px;
+}
+
+.main2 {
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    margin: auto;
+    gap: 35px;
+    overflow-x: auto;
+}
+
+.bg {
+    overflow-y: revert;
+    overflow-x: hidden;
+}

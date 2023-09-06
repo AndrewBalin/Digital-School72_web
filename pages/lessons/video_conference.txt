@@ -1,0 +1,30 @@
+import React, {useEffect, useRef, useState} from 'react'
+import styles from './video_conference.module.scss'
+import io from 'socket.io-client'
+import Profile from '../../lib/getDataFromServer'
+import VideoInputSelector from '../main_screen/widgets/conference/video_selector.js'
+
+
+function VideoConference(props) {
+
+    /*const password = props.password
+    const token = props.token
+
+    const [devicesList, setDevicesList] = useState(null)
+    const [devicesChange, setDevicesChange] = useState(null)
+
+    const [mediaDevices, setMediaDevices] = useState({
+        videoInputDeviceId: 'default',
+        audioInputDeviceId: 'default',
+        audioOutputDeviceId: 'default',
+    })
+
+    const localVideoRef = useRef(null)
+    const remoteVideoRef = useRef(null)
+
+    const socket = io.connect(Profile.url, {autoConnect: false})
+    let pc*/
+
+}
+
+export default VideoConference
