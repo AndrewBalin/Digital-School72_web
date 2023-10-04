@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './registration_desktop.module.scss'
+import styles from './registration_desktop.module.css'
 import Router, {withRouter} from 'next/router'
 import Profile from '../../lib/getDataFromServer'
 import {getCookie, setCookie} from 'cookies-next'

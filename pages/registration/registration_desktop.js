@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './registration_desktop.module.scss'
+import styles from './registration_desktop.module.css'
 import Router from 'next/router'
 import Profile from '../../lib/getDataFromServer'
 import {Alert, CircularProgress, MenuItem, Select, Snackbar, Tooltip, Autocomplete, TextField} from '@mui/material'

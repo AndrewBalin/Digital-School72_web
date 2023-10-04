@@ -1,15 +1,15 @@
-import React from 'react'
-import styles from './registration_desktop.module.scss'
+import React, {useState} from 'react'
+import styles from './registration_desktop.module.css'
 import Router from 'next/router'
 import {Alert, CircularProgress, Snackbar, Tooltip} from '@mui/material'
 import {getCookie, setCookie} from 'cookies-next'
 import { SmartCaptcha } from '@yandex/smart-captcha'
 
-import ApiTools from 'lib/apiRequests'
+import ApiTools from '../../lib/apiRequests'
 
 function Login () {
 
-    let apiTools = ApiTools()
+    let apiTools = new ApiTools()
 
     const [loginState, setLoginState] = useState(
         {
@@ -43,7 +43,6 @@ function Login () {
 
         try {
 
-            let st = this.state
             if (pageState.captcha === true) {
                 if (![loginState.login, loginState.password].includes('')) {
 
@@ -132,7 +131,7 @@ function Login () {
                 <div className={styles.buttons1}>
                     <div className={styles.button1}><span className={styles.buttonText}>Яндекс</span></div>
                     {
-                        !this.state.buttonLoading
+                        !pageState.buttonLoading
                             ? <div className={styles.button2}
                                    onClick={() => confirmLogin()}
                                    onKeyDown={
