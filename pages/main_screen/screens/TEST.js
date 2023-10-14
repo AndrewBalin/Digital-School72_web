@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './TEST.module.scss'
 import {Skeleton} from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+// import { DataGrid } from '@mui/x-data-grid'
 
 
 class TEST extends React.Component {
@@ -40,19 +40,19 @@ class TEST extends React.Component {
     ];
 
     render() {
-        return(
-            <div style={{ height: 400, width: '90%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <div style={{ height: '100%', width: '100%'}}>
-                    <DataGrid
-                        rows={this.rows}
-                        columns={this.columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
-                        checkboxSelection
-                    />
-                </div>
-            </div>
-            
+        return (
+            // <div style={{ height: 400, width: '90%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            //     <div style={{ height: '100%', width: '100%'}}>
+            //         <DataGrid
+            //             rows={this.rows}
+            //             columns={this.columns}
+            //             pageSize={5}
+            //             rowsPerPageOptions={[5]}
+            //             checkboxSelection
+            //         />
+            //     </div>
+            // </div>
+            <div></div>
         )
     }
 }
