@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styles from './registration_desktop.module.css'
 import Router, {withRouter} from 'next/router'
 import Profile from '../../lib/getDataFromServer'
@@ -22,28 +22,26 @@ import {Alert, CircularProgress, Snackbar} from '@mui/material'
 //     }
 // }
 
-const confirmMail = () => {
+function confirmMail () {
 
-    
-    console.log(props.router.query)
 
-        const [state, setState] = useState({
-            code: '',
-            buttonCode: 'notValid',
-            newMail: '',
-            timeToCode: 40,
-            mailSend: false,
-        })
+    const [state, setState] = useState({
+        code: '',
+        buttonCode: 'notValid',
+        newMail: '',
+        timeToCode: 40,
+        mailSend: false,
+    })
 
-        code = setInterval(() => codeSecond(), 1000)
+    let code = setInterval(() => codeSecond(), 1000)
 
-    checkPage = () => {
+    const checkPage = () => {
         if (!props.router.query.token) {
             Router.replace({
                 pathname: '/registration'
             })
         }
-        userData = getCookie('userData')
+        let userData = getCookie('userData')
         if (userData) {
             let reg = Profile.cookieLogin(JSON.parse(userData).token, JSON.parse(userData).password)
             if (reg.state === 'ok') {
@@ -60,7 +58,7 @@ const confirmMail = () => {
         }
     }
 
-    checkPage()
+    //checkPage()
 
     const codeSecond = () => {
         setState({...state, timeToCode: state.timeToCode - 1})
@@ -69,7 +67,7 @@ const confirmMail = () => {
         }
     }
 
-    checkCode = (event) => {
+    const checkCode = (event) => {
 
         setState({...state, code: event.target.value})
 
@@ -83,7 +81,7 @@ const confirmMail = () => {
         }
     }
 
-    sendNewMail = () => {
+    const sendNewMail = () => {
         let mail = state.newMail
         setState({...state, mailSend: true})
         console.log('ok')
@@ -100,7 +98,7 @@ const confirmMail = () => {
         }
     }
 
-    codeInput = ({time}) => {
+    const CodeInput = ({time}) => {
         let change = (even) => console.log(even.target.value)
         return (
             <div className={styles.inputDiv}>
@@ -122,7 +120,7 @@ const confirmMail = () => {
         )
     }
 
-    mailInput = ({send}) => {
+    const MailInput = ({send}) => {
         return (
             <div className={styles.inputDiv}>
                 <span className={styles.textOnInput}>Изменить адрес электронной почты</span>
@@ -146,7 +144,7 @@ const confirmMail = () => {
     }
 
 
-    buttonInput = ({type}) => {
+    const ButtonInput = ({type}) => {
         let style, textStyle, text
         if (type === 'notValid') {
             style = styles.notValidButton
@@ -240,11 +238,11 @@ const confirmMail = () => {
                 <legend className={styles.legend}>Проверьте вашу почту</legend>
                 <span className={styles.prompt}>Если вы не получили код подтверждения, отправьте запрос<br/>заново, или введите актуальную почту</span>
                 <div className={styles.regRow}>
-                    <codeInput time={state.timeToCode}/>
-                    <buttonInput type={state.buttonCode}/>
+                    <CodeInput time={state.timeToCode}/>
+                    <ButtonInput type={state.buttonCode}/>
                 </div>
                 <div className={styles.regRow}>
-                    <mailInput send={state.mailSend}/>
+                    <MailInput send={state.mailSend}/>
                 </div>
                 <div className={styles.buttons1}>
                     <div className={styles.button1} onClick={() => Router.back()}><span
