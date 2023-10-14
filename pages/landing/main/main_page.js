@@ -284,7 +284,7 @@ class Main_page extends React.Component {
                             </div>
                             <div style={style.buttonsAc1}>
                                 <div style={style.button1Ac1} onClick={() => Router.push('./registration')}><span style={style.buttonTextAc1}>Регистрация</span></div>
-                                <Link href='https://vk.com/digitalschool72' passHref><div style={style.button2Ac1}><a target='_blank' style={style.buttonTextAc1}>Подробнее</a></div></Link>
+                                <div style={style.button2Ac1} onClick={() => window.open('https://vk.com/digitalschool72', "_blank")}><span style={style.buttonTextAc1}>Подробнее</span></div>
                             </div>
                         </div>
                         <div style={style.action2}>
@@ -360,7 +360,6 @@ class Main_page extends React.Component {
                         </div>
                     </div>
                 </div>
-
             </div>
         )
     }
