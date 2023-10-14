@@ -20,25 +20,26 @@ class MainScreen extends React.Component {
         let token
         let password
 
-        if (props.router) {
-            token = props.router.query.token
-            this.setState({token: token})
-        } else if (getCookie('userData')) {
-            token = JSON.parse(getCookie('userData')).token
-            password = JSON.parse(getCookie('userData')).password
-            this.setState({token: token})
-        } else {
-            this.setState({page: 'ok'})
-        }
+        // if (props.router) {
+        //     token = props.router.query.token
+        //     this.setState({token: token})
+        // } else if (getCookie('userData')) {
+        //     token = JSON.parse(getCookie('userData')).token
+        //     password = JSON.parse(getCookie('userData')).password
+        //     this.setState({token: token})
+        // } else {
+        //     this.setState({page: 'ok'})
+        // }
 
         this.state = {
             page: 'Главная',
             rightMenuDisplay: true,
             userSet: false,
-            'token': token,
-            'password': password,
+            // 'token': token,
+            // 'password': password,
             update: false,
-            loading: true,
+            loading: false,
+            permissions: 1,
         }
 
     }
@@ -95,34 +96,33 @@ class MainScreen extends React.Component {
         this.setState({userSet: true, rightMenuDisplay: !this.state.rightMenuDisplay})
     }
 
-    getData = () => {
+    // getData = () => {
 
-        let token
+    //     let token
 
-        if (this.props.router) {
-            token = this.props.router.query.token
-            this.setState({token: token})
-        } else if (getCookie('userData')) {
-            token = JSON.parse(getCookie('userData')).token
-            this.setState({token: token})
-        } else {
-            this.setState({page: 'ok'})
-        }
+    //     if (this.props.router) {
+    //         token = this.props.router.query.token
+    //         this.setState({token: token})
+    //     } else if (getCookie('userData')) {
+    //         token = JSON.parse(getCookie('userData')).token
+    //         this.setState({token: token})
+    //     } else {
+    //         this.setState({page: 'ok'})
+    //     }
 
-    }
+    // }
 
     render() {
 
-        if (this.state.loading) {
-            return (
-                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
-                    <CircularProgress/>
-                </div>
+        // if (this.state.loading) {
+        //     return (
+        //         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+        //             <CircularProgress/>
+        //         </div>
 
-            )
-        }
+        //     )
+        // }
 
-        else {
             switch (this.state.permissions) {
                 case 0:
                     return (
@@ -134,11 +134,10 @@ class MainScreen extends React.Component {
                             <TopMenu/>
                             <div style={{display: 'flex'}}>
                                 <LeftMenu active={this.state.page} changePage={this.changePage}/>
-                                <div style={{width: '100%'
-                                }}>
+                                <div style={{width: '100%'}}>
                                     <this.CenterScreen screenName={this.state.page} token={this.state.token}/>
                                 </div>
-                                <RightMenu visible={this.state.rightMenuDisplay} userSet={this.changeMenuVisible} token={this.state.token}/>
+                                <RightMenu visible={this.state.rightMenuDisplay} userSet={this.changeMenuVisible}/>
                             </div>
                         </div>
                     )
@@ -151,7 +150,6 @@ class MainScreen extends React.Component {
                         <span>СУПЕР-СТРАНИЧКА АДМИНА</span>
                     )
             }
-        }
     }
 
     getMainWidth = () => {
