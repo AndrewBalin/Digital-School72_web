@@ -1,11 +1,19 @@
 import React from 'react'
-import styles from './registration_desktop.module.scss'
+import styles from './registration_desktop.module.css'
 import Router from 'next/router'
 import Profile from '../../lib/getDataFromServer'
 import {Alert, CircularProgress, MenuItem, Select, Snackbar, Tooltip, Autocomplete, TextField} from '@mui/material'
 import {getCookie, setCookie} from 'cookies-next'
 
-class Registration_desktop extends React.Component {
+
+function Registration_desktop() {
+
+
+
+}
+
+
+class Registration_desktop_old extends React.Component {
 
     constructor(props) {
         super(props)

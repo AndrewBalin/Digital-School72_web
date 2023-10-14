@@ -1,5 +1,4 @@
 module.exports = {
-    output: 'export',
     staticPageGenerationTimeout: 1000,
     experimental: { appDir: true },
     webpack(config) {
