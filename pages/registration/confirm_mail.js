@@ -23,6 +23,8 @@ import {Alert, CircularProgress, Snackbar} from '@mui/material'
 // }
 
 const confirmMail = () => {
+
+    
     console.log(props.router.query)
 
         const [state, setState] = useState({
@@ -57,6 +59,8 @@ const confirmMail = () => {
             }
         }
     }
+
+    checkPage()
 
     const codeSecond = () => {
         setState({...state, timeToCode: state.timeToCode - 1})

@@ -10,6 +10,7 @@
     "next": "^13.5.4",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
+    "react-responsive-carousel": "^3.2.23",
     "sass": "^1.69.3"
   },
   "scripts": {
