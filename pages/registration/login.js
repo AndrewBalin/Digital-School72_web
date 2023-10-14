@@ -33,28 +33,30 @@ function Login () {
 
                     setButtonLoading(true)
 
-                    let login_state = await apiTools.post(
+                    let status = await apiTools.post(
                         '/login',
                         {
                             'username': login,
                             'password': password
                         }
                     )
-                    if (login_state.state === 'ok') {
 
-                        let userData = {
-                            token: login_state.id,
-                        }
+                    if (status.error === false) {
 
-                        setCookie('userData', userData)
+                        /*let userData = {
+                            token: status.data,
+                        }*/
 
+                        //setCookie('userData', userData)
+                        console.log(status.value)
                         Router.replace({
                             pathname: '../main_screen',
-                            query: userData
+                            //query: userData
                         })
 
                     } else {
-                        setError(login_state.error)
+                        console.log(status.value)
+                        setError(status.value.reason)
                     }
                 } else {
                     setError('Все поля должны быть заполнены')
