@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styles from './registration_desktop.module.css'
 import Router from 'next/router'
 import Profile from '../../lib/getDataFromServer'
@@ -8,52 +8,43 @@ import {getCookie, setCookie} from 'cookies-next'
 
 function Registration_desktop() {
 
+    
 
+    const [state, setState] = useState({
+        schools: [],
+        cities: [],
+        name: '',
+        surname: '',
+        patronymic: '',
+        email: '',
+        city: '',
+        password: '',
+        repeatPassword: '',
+        school: '',
+        nick: '',
+        yandex: '',
+        error: false,
+        buttonLoading: false,
+    })
 
-}
-
-
-class Registration_desktop_old extends React.Component {
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            schools: [],
-            cities: [],
-            name: '',
-            surname: '',
-            patronymic: '',
-            email: '',
-            city: '',
-            password: '',
-            repeatPassword: '',
-            school: '',
-            nick: '',
-            yandex: '',
-            error: false,
-            buttonLoading: false,
-        }
-    }
-
-    fields = [
+    const fields = [
         [['Фамилия', styles.inputField1, 'surname'], ['Имя', styles.inputField1, 'name'], ['Отчество', styles.inputField1, 'patronymic']],
         [['Электронная почта', styles.inputField2, 'email', 'Действующий адрес электронной почты не являющийся временной почтой'], ['Город', styles.inputField1, 'city']],
         [['Пароль', styles.inputField2, 'password', 'Во время альфа-тестирования мы не проверяем ваш пароль на верность'], ['Школа', styles.inputField1, 'school', 'Основное место вашего обучения, дополнительное можно будет добавить потом']],
         [['Повторите пароль', styles.inputField2, 'repeatPassword'], ['Ник на платформе', styles.inputField1, 'nickname', 'Тег, по которому вас будет легко найти, например ivanivanov']],
     ]
 
-    checkPage = () => {
+    const checkPage = () => {
 
-        this.userData = getCookie('userData')
+        const userData = getCookie('userData')
 
-        if (this.userData) {
-            let reg = Profile.cookieLogin(JSON.parse(this.userData).token, JSON.parse(this.userData).password)
+        if (userData) { // TODO: rewrite (this is copied a lot) DRY
+            let reg = Profile.cookieLogin(JSON.parse(userData).token, JSON.parse(userData).password)
             reg.then(o => {
                 if (o.state === 'ok') {
                     let userData = {
-                        token: JSON.parse(this.userData).token,
-                        password: JSON.parse(this.userData).password
+                        token: JSON.parse(userData).token,
+                        password: JSON.parse(userData).password
                     }
 
                     Router.replace({
@@ -65,25 +56,28 @@ class Registration_desktop_old extends React.Component {
         }
     }
 
-    getCities = () => {
+    const getCities = () => {
         let reg = Profile.getCities()
         reg.then(o => {
             if (o.state === 'ok') {
-                this.setState({cities: o.cities})
+                setState({...state, cities: o.cities})
             }
         })
     }
 
-    getSchools = (city) => {
+    checkPage()
+    getCities()
+
+    const getSchools = (city) => {
         let reg = Profile.getSchools(city)
         reg.then(o => {
             if (o.state === 'ok') {
-                this.setState({schools: o.schools})
+                setState({...state, schools: o.schools})
             }
         })
     }
 
-    select = ({type}) => {
+    const CustomSelect = ({type}) => {
         return(
 
             <Autocomplete
@@ -97,15 +91,15 @@ class Registration_desktop_old extends React.Component {
 
                 onChange={(event, newValue) => {
                     console.log(newValue)
-                    this.setState({[type]: newValue})
+                    setState({...state, [type]: newValue})
                     if(type === 'city'){
-                        this.setState({school: ''})
-                        this.getSchools(newValue)
+                        setState({...state, school: ''})
+                        getSchools(newValue)
                     }}}
                 options={
                 type === 'city'
-                    ? this.state.cities
-                    : this.state.schools
+                    ? state.cities
+                    : state.schools
                 }
                 renderInput={(params) =>
                     <div ref={params.InputProps.ref}>
@@ -116,7 +110,7 @@ class Registration_desktop_old extends React.Component {
         )
     }
 
-    regRow = ({fields, state}) => {
+    const RegRow = ({fields}) => {
         return (
             <div className={styles.regRow}>
                 {fields.map(field => {
@@ -130,12 +124,12 @@ class Registration_desktop_old extends React.Component {
                                 }
                                 {
                                     field[2] === 'city' ?
-                                        <this.select type={field[2]}/>
+                                        <CustomSelect type={field[2]}/>
                                     : field[2] === 'school' ?
-                                        <this.select type={field[2]}/>
+                                        <CustomSelect type={field[2]}/>
                                     : <input className={field[1]}
-                                            readOnly={(state.yandex !== '' && field[2] === 'email') || this.state.buttonLoading || field[2]==='school'}
-                                            value={state[field[2]]} onChange={e => this.setState({[field[2]]: e.target.value})}/>
+                                            readOnly={(state.yandex !== '' && field[2] === 'email') || state.buttonLoading || field[2]==='school'}
+                                            value={state[field[2]]} onChange={e => setState({...state, [field[2]]: e.target.value})}/>
                                 }
 
                             </div>
@@ -146,21 +140,21 @@ class Registration_desktop_old extends React.Component {
         )
     }
 
-    error = () => {
+    const error = () => {
         throw new Error()
     }
 
-    confirmRegistration = async () => {
+    const confirmRegistration = async () => {
 
         let error_time
 
         try {
 
-            let st = this.state
+            let st = state
             if (![st.school, st.patronymic, st.name, st.surname, st.email, st.password, st.nickname, st.city, st.repeatPassword].includes('')) {
                 if (st.password === st.repeatPassword) {
 
-                    this.setState({buttonLoading: true})
+                    setState({...state, buttonLoading: true})
 
                     error_time = setTimeout(() => {
                         return 1 / 0
@@ -179,70 +173,84 @@ class Registration_desktop_old extends React.Component {
                             query: userData
                         })
                     } else {
-                        this.setState({error: reg.error})
+                        setState({...state, error: reg.error})
                     }
 
 
                 } else {
-                    this.setState({error: 'Пароль и подтверждение пароля не совпадают'})
+                    setState({...state, error: 'Пароль и подтверждение пароля не совпадают'})
                 }
             } else {
-                this.setState({error: 'Все поля должны быть заполнены'})
+                setState({...state, error: 'Все поля должны быть заполнены'})
             }
 
         } catch {
-            this.setState({error: 'Что-то пошло не так во время отправки данных'})
+            setState({...state, error: 'Что-то пошло не так во время отправки данных'})
         } finally {
-            this.setState({buttonLoading: false})
+            setState({...state, buttonLoading: false})
             clearTimeout(error_time)
         }
 
 
     }
 
-    checkRepeatPassword = () => {
+    const checkRepeatPassword = () => {
 
     }
 
+    return (
+        <div className={styles.mainbg}>
+            <test></test>
+            <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'right'}} open={state.error}
+                      autoHideDuration={3000} onClose={() => setState({...state, error: false})}>
+                <Alert onClose={confirmRegistration} severity="error">
+                    {state.error}
+                </Alert>
+            </Snackbar>
+            <fieldset className={styles.regBox}>
+                <legend className={styles.legend}>Регистрация</legend>
+                <span className={styles.prompt}>Обратите внимание на правильность заполненных данных</span>
+                {fields.map(field =>
+                    <RegRow fields={field}/>
+                )}
+                <div className={styles.buttons1}>
+                    <div className={styles.button1}><span className={styles.buttonText}>Яндекс</span></div>
+                    {
+                        !state.buttonLoading
+                            ? <div className={styles.button2}
+                                   onClick={() => confirmRegistration()}>
+                                <span>Продолжить</span>
+                            </div>
+
+                            : <div className={styles.button2loading}>
+                                <CircularProgress color="inherit" size='25px'/>
+                                <span>Проверка</span>
+                            </div>
+
+                    }
+                </div>
+            </fieldset>
+        </div>
+    )
+}
+
+
+class Registration_desktop_old extends React.Component {
+
+    constructor(props) {
+        super(props)
+
+        
+    }
+
+    
+
     render() {
-        return (
-            <div className={styles.mainbg}>
-                <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'right'}} open={this.state.error}
-                          autoHideDuration={3000} onClose={() => this.setState({error: false})}>
-                    <Alert onClose={this.confirmRegistration} severity="error">
-                        {this.state.error}
-                    </Alert>
-                </Snackbar>
-                <fieldset className={styles.regBox}>
-                    <legend className={styles.legend}>Регистрация</legend>
-                    <span className={styles.prompt}>Обратите внимание на правильность заполненных данных</span>
-                    {this.fields.map(field =>
-                        <this.regRow fields={field} state={this.state}/>
-                    )}
-                    <div className={styles.buttons1}>
-                        <div className={styles.button1}><span className={styles.buttonText}>Яндекс</span></div>
-                        {
-                            !this.state.buttonLoading
-                                ? <div className={styles.button2}
-                                       onClick={() => this.confirmRegistration()}>
-                                    <span>Продолжить</span>
-                                </div>
-
-                                : <div className={styles.button2loading}>
-                                    <CircularProgress color="inherit" size='25px'/>
-                                    <span>Проверка</span>
-                                </div>
-
-                        }
-                    </div>
-                </fieldset>
-            </div>
-        )
+        
     }
 
     componentDidMount = () => {
-        this.checkPage()
-        this.getCities()
+        
     }
 
 
