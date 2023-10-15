@@ -86,9 +86,6 @@ function Registration_desktop() {
                 ? 'Этот город пока что не зарегистрирован'
                     : 'Эта школа пока что не зарегистрирована'
             }
-
-
-
                 onChange={(event, newValue) => {
                     console.log(newValue)
                     setState({...state, [type]: newValue})
