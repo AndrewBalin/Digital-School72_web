@@ -31,6 +31,8 @@ function RegistrationDesktop() {
         username: '',
     })
 
+    const [testState, setTestState] = useState('')
+
     // ApiTools
     const [apiTools, setApiTools] = useState(new ApiTools())
 
@@ -38,7 +40,7 @@ function RegistrationDesktop() {
     const fields = [
         [['Фамилия', styles.inputField1, 'surname'], ['Имя', styles.inputField1, 'name'], ['Отчество', styles.inputField1, 'patronymic']],
         [['Электронная почта', styles.inputField2, 'email', 'Действующий адрес электронной почты не являющийся временной почтой'], ['Город', styles.inputField1, 'city']],
-        [['Пароль', styles.inputField2, 'password', 'Во время альфа-тестирования мы не проверяем ваш пароль на верность'], ['Школа', styles.inputField1, 'school', 'Основное место вашего обучения, дополнительное можно будет добавить потом']],
+        [['Пароль', styles.inputField2, 'password', 'Во время альфа-тестирования мы не проверяем ваш пароль на надежность'], ['Школа', styles.inputField1, 'school', 'Основное место вашего обучения, дополнительное можно будет добавить потом']],
         [['Повторите пароль', styles.inputField2, 'repeatPassword'], ['Ник на платформе', styles.inputField1, 'username', 'Тег, по которому вас будет легко найти, например ivanivanov']],
     ]
 
@@ -105,7 +107,7 @@ function RegistrationDesktop() {
                 }
                 renderInput={(params) =>
                     <div ref={params.InputProps.ref}>
-                    <input {...params.inputProps} className={styles.inputField1}/>
+                        <input {...params.inputProps} className={styles.inputField1}/>
                     </div>
                 }
             />
@@ -128,8 +130,9 @@ function RegistrationDesktop() {
                                     field[2] === 'city' || field[2] === 'school'
                                         ? <CustomSelect type={field[2]}/>
                                         : <input className={field[1]}
-                                                readOnly={pageState.buttonLoading || field[2] === 'school'}
-                                                value={regState[field[2]]} onChange={e => setRegState({...regState, [field[2]]: e.target.value})}/>
+                                                //readOnly={pageState.buttonLoading}
+                                                /*value={regState[field[2]]} onChange={e => setRegState({...regState, [field[2]]: e.target.value})}/>*/
+                                                value={testState} onChange={(e) => setTestState(e.target.value)}/>
                                 }
                             </div>
                         )
