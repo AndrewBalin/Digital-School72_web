@@ -1,0 +1,43 @@
+.mainbg {
+    margin: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: #171720;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.regBox {
+    border: 2px dashed rgba(255, 255, 255, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 50px;
+}
+
+.legend {
+    padding: 0 5px;
+    font-family: Effra;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 35px;
+    color: #ffffff;
+    display: flex;
+    line-height: 0.33em;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    margin-bottom: 20px;
+}
+
+.prompt {
+    color: rgba(255, 255, 255, 0.85);
+    font-family: Effra;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 23px;
+    line-height: 27px;
+}
+

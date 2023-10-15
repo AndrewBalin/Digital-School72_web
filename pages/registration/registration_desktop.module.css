@@ -68,7 +68,6 @@
     font-size: 18px;
     line-height: 21px;
     padding: 6px;
-
 }
 
 .inputField2 {
@@ -83,6 +82,10 @@
     font-size: 18px;
     line-height: 21px;
     padding: 6px;
+}
+
+#list::first-letter {
+    text-transform: capitalize;
 }
 
 .inputLabel {

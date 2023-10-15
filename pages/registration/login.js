@@ -7,37 +7,40 @@ import { SmartCaptcha } from '@yandex/smart-captcha'
 
 import ApiTools from '../../lib/apiTools'
 
+const apiTools = new ApiTools()
+
 function Login () {
-    const [login, setLogin] = useState('')
-    const [password, setPassword] = useState('')
 
-    const [error, setError] = useState(false)
-    const [buttonLoading, setButtonLoading] = useState(false)
-    const [captcha, setCaptcha] = useState(false)
-    const [refreshCaptcha, setRefreshCaptcha] = useState(false)
+    // State of page components
+    const [pageState, setPageState] = useState({
+        captcha: false,
+        refreshCaptcha: false,
+        error: '',
+        buttonLoading: false,
+    })
 
-    const [apiTools, setApiTools] = useState(new ApiTools())
-
-    /*useEffect(() => {
-        setApiTools(new ApiTools())
-    }, []);*/
+    // State of user data
+    const [loginState, setLoginState] = useState({
+        login: '',
+        password: '',
+    })
 
     const confirmLogin = async function () {
 
-        setRefreshCaptcha(true)
+        setPageState({...pageState, refreshCaptcha: true})
 
         try {
 
-            if (captcha === true) {
-                if (![login, password].includes('')) {
+            if (pageState.captcha === true) {
+                if (Object.values(loginState).every(value => value !== '')) {
 
-                    setButtonLoading(true)
+                    setPageState({...pageState, buttonLoading: true})
 
                     let status = await apiTools.post(
                         '/login',
                         {
-                            'username': login,
-                            'password': password
+                            'username': loginState.login,
+                            'password': loginState.password
                         }
                     )
 
@@ -56,27 +59,27 @@ function Login () {
 
                     } else {
                         console.log(status.value)
-                        setError(status.value.reason)
+                        setPageState({...pageState, error: status.value.response.data})
                     }
                 } else {
-                    setError('Все поля должны быть заполнены')
+                    setPageState({...pageState, error: 'Все поля должны быть заполнены'})
                 }
             } else {
-                setError('Вы должны пройти проверку на робота')
+                setPageState({...pageState, error: 'Все поля должны быть заполнены'})
             }
         } catch (e) {
-            setError('Что-то пошло не так во время отправки данных')
+            setPageState({...pageState, error: 'Что-то пошло не так во время отправки данных'})
             console.log("Error: " + e)
         } finally {
-            setButtonLoading(false)
+            setPageState({...pageState, buttonLoading: false})
         }
     }
         return (
             <div className={styles.mainbg}>
-                <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'right'}} open={Boolean(error)}
-                          autoHideDuration={3000} onClose={() => setError(false)}>
+                <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'right'}} open={Boolean(pageState.error)}
+                          autoHideDuration={3000} onClose={() => setPageState({...pageState, error: ''}) }>
                     <Alert severity="error">
-                        {error}
+                        {pageState.error}
                     </Alert>
                 </Snackbar>
                 <fieldset className={styles.regBox}>
@@ -87,8 +90,8 @@ function Login () {
                         <div className={styles.inputDiv}>
                             <span className={styles.textOnInput}>Логин (e-mail)</span>
                             <input className={styles.inputField2}
-                                   readOnly={buttonLoading}
-                                   value={login} onChange={e => setLogin(e.target.value)}
+                                   readOnly={pageState.buttonLoading}
+                                   value={loginState.login} onChange={e => setLoginState({...pageState, login: e.target.value})}
                                    onKeyDown={
                                        event => {
                                            (event.key === 'Enter') && confirmLogin()
@@ -100,8 +103,8 @@ function Login () {
                             <span className={styles.textOnInput}>Пароль</span>
                             <input className={styles.inputField2}
                                    type='password'
-                                   readOnly={buttonLoading}
-                                   value={password} onChange={e => setPassword(e.target.value)}
+                                   readOnly={pageState.buttonLoading}
+                                   value={loginState.password} onChange={e => setLoginState({...pageState, password: e.target.value})}
                                    onKeyDown={
                                        event => {
                                            (event.key === 'Enter') && confirmLogin()
@@ -113,7 +116,7 @@ function Login () {
                         <SmartCaptcha
                             sitekey="ysc1_ALoxRZ4Qx2UJ4EjXKCscQ0Sl25WeHEDgdKo4YwtX103ee32e"
                             onSuccess={value => {
-                                setCaptcha(true)
+                                setPageState({...pageState, captcha: true})
                             }}
                         />
                     </div>
@@ -121,7 +124,7 @@ function Login () {
                     <div className={styles.buttons1}>
                         <div className={styles.button1}><span className={styles.buttonText}>Яндекс</span></div>
                         {
-                            !buttonLoading
+                            !pageState.buttonLoading
                                 ? <div className={styles.button2}
                                        onClick={() => confirmLogin()}
                                        onKeyDown={
@@ -135,7 +138,6 @@ function Login () {
                                     <CircularProgress color="inherit" size='25px'/>
                                     <span>Проверка</span>
                                 </div>
-
                         }
                     </div>
                 </fieldset>

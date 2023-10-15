@@ -24,7 +24,6 @@ import {Alert, CircularProgress, Snackbar} from '@mui/material'
 
 function confirmMail () {
 
-
     const [state, setState] = useState({
         code: '',
         buttonCode: 'notValid',
