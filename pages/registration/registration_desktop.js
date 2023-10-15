@@ -42,45 +42,45 @@ function Registration_desktop() {
         [['Повторите пароль', styles.inputField2, 'repeatPassword'], ['Ник на платформе', styles.inputField1, 'username', 'Тег, по которому вас будет легко найти, например ivanivanov']],
     ]
 
-    const checkPage = () => { //TODO: need to rewrite it (DRY)
+    // const checkPage = () => { //TODO: need to rewrite it (DRY)
+    //
+    //     const userData = getCookie('userData')
+    //
+    //     if (userData) { // TODO: rewrite (this is copied a lot) DRY
+    //         let reg = Profile.cookieLogin(JSON.parse(userData).token, JSON.parse(userData).password)
+    //         reg.then(o => {
+    //             if (o.state === 'ok') {
+    //                 let userData = {
+    //                     token: JSON.parse(userData).token,
+    //                     password: JSON.parse(userData).password
+    //                 }
+    //
+    //                 Router.replace({
+    //                     pathname: '../main_screen',
+    //                     query: userData
+    //                 })
+    //             }
+    //         })
+    //     }
+    // }
 
-        const userData = getCookie('userData')
-
-        if (userData) { // TODO: rewrite (this is copied a lot) DRY
-            let reg = Profile.cookieLogin(JSON.parse(userData).token, JSON.parse(userData).password)
-            reg.then(o => {
-                if (o.state === 'ok') {
-                    let userData = {
-                        token: JSON.parse(userData).token,
-                        password: JSON.parse(userData).password
-                    }
-
-                    Router.replace({
-                        pathname: '../main_screen',
-                        query: userData
-                    })
-                }
-            })
-        }
-    }
-
-    const getCities = () => {
-        let reg = Profile.getCities()
-        reg.then(o => {
-            if (o.state === 'ok') {
-                setPageState({...pageState, cities: o.cities})
-            }
-        })
-    }
-
-    const getSchools = (city) => {
-        let reg = Profile.getSchools(city)
-        reg.then(o => {
-            if (o.state === 'ok') {
-                setPageState({...pageState, schools: o.schools})
-            }
-        })
-    }
+    // const getCities = () => {
+    //     let reg = Profile.getCities()
+    //     reg.then(o => {
+    //         if (o.state === 'ok') {
+    //             setPageState({...pageState, cities: o.cities})
+    //         }
+    //     })
+    // }
+    //
+    // const getSchools = (city) => {
+    //     let reg = Profile.getSchools(city)
+    //     reg.then(o => {
+    //         if (o.state === 'ok') {
+    //             setPageState({...pageState, schools: o.schools})
+    //         }
+    //     })
+    // }
 
     const CustomSelect = ({type}) => {
         return(
@@ -96,7 +96,7 @@ function Registration_desktop() {
                     setRegState({...regState, [type]: newValue})
                     if(type === 'city'){
                         setRegState({...regState, school: ''})
-                        getSchools(newValue)
+                        //getSchools(newValue)
                     }}}
                 options={
                     type === 'city'
@@ -128,7 +128,7 @@ function Registration_desktop() {
                                     field[2] === 'city' || field[2] === 'school'
                                         ? <CustomSelect type={field[2]}/>
                                         : <input className={field[1]}
-                                                readOnly={(state.yandex !== '' && field[2] === 'email') || pageState.buttonLoading || field[2] === 'school'}
+                                                readOnly={pageState.buttonLoading || field[2] === 'school'}
                                                 value={regState[field[2]]} onChange={e => setRegState({...regState, [field[2]]: e.target.value})}/>
                                 }
                             </div>
@@ -148,7 +148,7 @@ function Registration_desktop() {
 
                     setPageState({...pageState, buttonLoading: true})
 
-                    let reg = await Profile.registration(state.school, st.patronymic, st.name, st.surname, st.email, st.password, st.nickname, st.city)
+                    //let reg = await Profile.registration(state.school, st.patronymic, st.name, st.surname, st.email, st.password, st.nickname, st.city)
                     let status = await apiTools.post(
                         '/register_send_mail',
                         regState
@@ -184,8 +184,6 @@ function Registration_desktop() {
         } finally {
             setPageState({...pageState, buttonLoading: false})
         }
-
-
     }
 
     const checkRepeatPassword = () => {
