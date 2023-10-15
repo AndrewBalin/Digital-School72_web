@@ -7,7 +7,7 @@ import {getCookie} from 'cookies-next'
 import ApiTools from "../../lib/apiTools";
 
 
-function Registration_desktop() {
+function RegistrationDesktop() {
 
     // State of page components
     const [pageState, setPageState] = useState({
@@ -169,7 +169,7 @@ function Registration_desktop() {
 
                     } else {
                         console.log(status.value)
-                        setError(status.value.reason)
+                        setPageState({...pageState, error: status.value.reason})
                     }
 
                 } else {
@@ -208,7 +208,7 @@ function Registration_desktop() {
                 <div className={styles.buttons1}>
                     <div className={styles.button1}><span className={styles.buttonText}>Яндекс</span></div>
                     {
-                        !state.buttonLoading
+                        !pageState.buttonLoading
                             ? <div className={styles.button2}
                                    onClick={() => confirmRegistration()}>
                                 <span>Продолжить</span>
@@ -226,26 +226,4 @@ function Registration_desktop() {
     )
 }
 
-
-class Registration_desktop_old extends React.Component {
-
-    constructor(props) {
-        super(props)
-
-        
-    }
-
-    
-
-    render() {
-        
-    }
-
-    componentDidMount = () => {
-        
-    }
-
-
-}
-
-export default Registration_desktop
+export default RegistrationDesktop
