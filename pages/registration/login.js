@@ -49,7 +49,7 @@ function Login () {
 
                         //setCookie('userData', userData)
                         console.log(status.value)
-                        Router.replace({
+                        await Router.replace({
                             pathname: '../main_screen',
                             //query: userData
                         })
@@ -237,7 +237,7 @@ class OldLogin extends React.Component {
 
                         setCookie('userData', userData)
 
-                        Router.replace({
+                        await Router.replace({
                             pathname: '../main_screen',
                             query: userData
                         })
