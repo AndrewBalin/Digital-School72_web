@@ -2,17 +2,24 @@ import React, {useState} from 'react'
 import styles from './registration_desktop.module.css'
 import Router from 'next/router'
 import Profile from '../../lib/getDataFromServer'
-import {Alert, CircularProgress, MenuItem, Select, Snackbar, Tooltip, Autocomplete, TextField} from '@mui/material'
-import {getCookie, setCookie} from 'cookies-next'
+import {Alert, CircularProgress, Snackbar, Tooltip, Autocomplete} from '@mui/material'
+import {getCookie} from 'cookies-next'
+import ApiTools from "../../lib/apiTools";
 
 
-function Registration_desktop() {
+function RegistrationDesktop() {
 
-    
-
-    const [state, setState] = useState({
+    // State of page components
+    const [pageState, setPageState] = useState({
         schools: [],
         cities: [],
+        yandex: '',
+        error: false,
+        buttonLoading: false,
+    })
+
+    // State of user data
+    const [regState, setRegState] = useState({
         name: '',
         surname: '',
         patronymic: '',
@@ -21,89 +28,86 @@ function Registration_desktop() {
         password: '',
         repeatPassword: '',
         school: '',
-        nick: '',
-        yandex: '',
-        error: false,
-        buttonLoading: false,
+        username: '',
     })
 
+    const [testState, setTestState] = useState('')
+
+    // ApiTools
+    const [apiTools, setApiTools] = useState(new ApiTools())
+
+    // Registration fields
     const fields = [
         [['Фамилия', styles.inputField1, 'surname'], ['Имя', styles.inputField1, 'name'], ['Отчество', styles.inputField1, 'patronymic']],
         [['Электронная почта', styles.inputField2, 'email', 'Действующий адрес электронной почты не являющийся временной почтой'], ['Город', styles.inputField1, 'city']],
-        [['Пароль', styles.inputField2, 'password', 'Во время альфа-тестирования мы не проверяем ваш пароль на верность'], ['Школа', styles.inputField1, 'school', 'Основное место вашего обучения, дополнительное можно будет добавить потом']],
-        [['Повторите пароль', styles.inputField2, 'repeatPassword'], ['Ник на платформе', styles.inputField1, 'nickname', 'Тег, по которому вас будет легко найти, например ivanivanov']],
+        [['Пароль', styles.inputField2, 'password', 'Во время альфа-тестирования мы не проверяем ваш пароль на надежность'], ['Школа', styles.inputField1, 'school', 'Основное место вашего обучения, дополнительное можно будет добавить потом']],
+        [['Повторите пароль', styles.inputField2, 'repeatPassword'], ['Ник на платформе', styles.inputField1, 'username', 'Тег, по которому вас будет легко найти, например ivanivanov']],
     ]
 
-    const checkPage = () => {
+    // const checkPage = () => { //TODO: need to rewrite it (DRY)
+    //
+    //     const userData = getCookie('userData')
+    //
+    //     if (userData) { // TODO: rewrite (this is copied a lot) DRY
+    //         let reg = Profile.cookieLogin(JSON.parse(userData).token, JSON.parse(userData).password)
+    //         reg.then(o => {
+    //             if (o.state === 'ok') {
+    //                 let userData = {
+    //                     token: JSON.parse(userData).token,
+    //                     password: JSON.parse(userData).password
+    //                 }
+    //
+    //                 Router.replace({
+    //                     pathname: '../main_screen',
+    //                     query: userData
+    //                 })
+    //             }
+    //         })
+    //     }
+    // }
 
-        const userData = getCookie('userData')
-
-        if (userData) { // TODO: rewrite (this is copied a lot) DRY
-            let reg = Profile.cookieLogin(JSON.parse(userData).token, JSON.parse(userData).password)
-            reg.then(o => {
-                if (o.state === 'ok') {
-                    let userData = {
-                        token: JSON.parse(userData).token,
-                        password: JSON.parse(userData).password
-                    }
-
-                    Router.replace({
-                        pathname: '../main_screen',
-                        query: userData
-                    })
-                }
-            })
-        }
-    }
-
-    const getCities = () => {
-        let reg = Profile.getCities()
-        reg.then(o => {
-            if (o.state === 'ok') {
-                setState({...state, cities: o.cities})
-            }
-        })
-    }
-
-    checkPage()
-    getCities()
-
-    const getSchools = (city) => {
-        let reg = Profile.getSchools(city)
-        reg.then(o => {
-            if (o.state === 'ok') {
-                setState({...state, schools: o.schools})
-            }
-        })
-    }
+    // const getCities = () => {
+    //     let reg = Profile.getCities()
+    //     reg.then(o => {
+    //         if (o.state === 'ok') {
+    //             setPageState({...pageState, cities: o.cities})
+    //         }
+    //     })
+    // }
+    //
+    // const getSchools = (city) => {
+    //     let reg = Profile.getSchools(city)
+    //     reg.then(o => {
+    //         if (o.state === 'ok') {
+    //             setPageState({...pageState, schools: o.schools})
+    //         }
+    //     })
+    // }
 
     const CustomSelect = ({type}) => {
         return(
 
             <Autocomplete
                 noOptionsText={
-                type === 'city'
-                ? 'Этот город пока что не зарегистрирован'
-                    : 'Эта школа пока что не зарегистрирована'
-            }
-
-
-
+                    type === 'city'
+                        ? 'Этот город пока что не зарегистрирован'
+                        : 'Эта школа пока что не зарегистрирована'
+                }
                 onChange={(event, newValue) => {
                     console.log(newValue)
-                    setState({...state, [type]: newValue})
+                    setRegState({...regState, [type]: newValue})
                     if(type === 'city'){
-                        setState({...state, school: ''})
-                        getSchools(newValue)
+                        setRegState({...regState, school: ''})
+                        //getSchools(newValue)
                     }}}
                 options={
-                type === 'city'
-                    ? state.cities
-                    : state.schools
+                    type === 'city'
+                        ? pageState.cities
+                        : pageState.schools
                 }
                 renderInput={(params) =>
                     <div ref={params.InputProps.ref}>
-                    <input {...params.inputProps} className={styles.inputField1}/>
+                        <input {...params.inputProps} className={styles.inputField1}/>
                     </div>
                 }
             />
@@ -123,15 +127,13 @@ function Registration_desktop() {
                                         : <span className={styles.textOnInput}>{field[0]}</span>
                                 }
                                 {
-                                    field[2] === 'city' ?
-                                        <CustomSelect type={field[2]}/>
-                                    : field[2] === 'school' ?
-                                        <CustomSelect type={field[2]}/>
-                                    : <input className={field[1]}
-                                            readOnly={(state.yandex !== '' && field[2] === 'email') || state.buttonLoading || field[2]==='school'}
-                                            value={state[field[2]]} onChange={e => setState({...state, [field[2]]: e.target.value})}/>
+                                    field[2] === 'city' || field[2] === 'school'
+                                        ? <CustomSelect type={field[2]}/>
+                                        : <input className={field[1]}
+                                                //readOnly={pageState.buttonLoading}
+                                                /*value={regState[field[2]]} onChange={e => setRegState({...regState, [field[2]]: e.target.value})}/>*/
+                                                value={testState} onChange={(e) => setTestState(e.target.value)}/>
                                 }
-
                             </div>
                         )
                     }
@@ -140,58 +142,51 @@ function Registration_desktop() {
         )
     }
 
-    const error = () => {
-        throw new Error()
-    }
-
     const confirmRegistration = async () => {
-
-        let error_time
 
         try {
 
-            let st = state
-            if (![st.school, st.patronymic, st.name, st.surname, st.email, st.password, st.nickname, st.city, st.repeatPassword].includes('')) {
-                if (st.password === st.repeatPassword) {
+            if (Object.values(regState).every(value => value !== '')) {
+                if (regState.password === regState.repeatPassword) {
 
-                    setState({...state, buttonLoading: true})
+                    setPageState({...pageState, buttonLoading: true})
 
-                    error_time = setTimeout(() => {
-                        return 1 / 0
-                    }, 2000)
+                    //let reg = await Profile.registration(state.school, st.patronymic, st.name, st.surname, st.email, st.password, st.nickname, st.city)
+                    let status = await apiTools.post(
+                        '/register_send_mail',
+                        regState
+                    )
 
-                    let reg = await Profile.registration(st.school, st.patronymic, st.name, st.surname, st.email, st.password, st.nickname, st.city)
-                    if (reg.state === 'ok') {
+                    if (status.error === false) {
 
-                        let userData = {
-                            token: reg.token,
-                            password: reg.password
-                        }
+                        /*let userData = {
+                            token: status.data,
+                        }*/
 
-                        Router.replace({
+                        //setCookie('userData', userData)
+                        console.log(status.value)
+                        await Router.replace({
                             pathname: './registration/confirm_mail',
-                            query: userData
+                            //query: userData
                         })
+
                     } else {
-                        setState({...state, error: reg.error})
+                        console.log(status.value)
+                        setPageState({...pageState, error: status.value.reason})
                     }
 
-
                 } else {
-                    setState({...state, error: 'Пароль и подтверждение пароля не совпадают'})
+                    setPageState({...pageState, error: 'Пароль и подтверждение пароля не совпадают'})
                 }
             } else {
-                setState({...state, error: 'Все поля должны быть заполнены'})
+                setPageState({...pageState, error: 'Все поля должны быть заполнены'})
             }
 
         } catch {
-            setState({...state, error: 'Что-то пошло не так во время отправки данных'})
+            setPageState({...pageState, error: 'Что-то пошло не так во время отправки данных'})
         } finally {
-            setState({...state, buttonLoading: false})
-            clearTimeout(error_time)
+            setPageState({...pageState, buttonLoading: false})
         }
-
-
     }
 
     const checkRepeatPassword = () => {
@@ -201,10 +196,10 @@ function Registration_desktop() {
     return (
         <div className={styles.mainbg}>
             <test></test>
-            <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'right'}} open={state.error}
-                      autoHideDuration={3000} onClose={() => setState({...state, error: false})}>
+            <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'right'}} open={pageState.error}
+                      autoHideDuration={3000} onClose={() => setState({...pageState, error: false})}>
                 <Alert onClose={confirmRegistration} severity="error">
-                    {state.error}
+                    {pageState.error}
                 </Alert>
             </Snackbar>
             <fieldset className={styles.regBox}>
@@ -216,7 +211,7 @@ function Registration_desktop() {
                 <div className={styles.buttons1}>
                     <div className={styles.button1}><span className={styles.buttonText}>Яндекс</span></div>
                     {
-                        !state.buttonLoading
+                        !pageState.buttonLoading
                             ? <div className={styles.button2}
                                    onClick={() => confirmRegistration()}>
                                 <span>Продолжить</span>
@@ -234,26 +229,4 @@ function Registration_desktop() {
     )
 }
 
-
-class Registration_desktop_old extends React.Component {
-
-    constructor(props) {
-        super(props)
-
-        
-    }
-
-    
-
-    render() {
-        
-    }
-
-    componentDidMount = () => {
-        
-    }
-
-
-}
-
-export default Registration_desktop
+export default RegistrationDesktop
