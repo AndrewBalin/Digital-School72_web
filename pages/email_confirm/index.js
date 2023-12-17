@@ -12,12 +12,11 @@ const apiTools = new ApiTools()
 function Confirm() {
 
     const [valid, setValid] = useState('Ожидание подтверждения')
-
     const router = useRouter()
-    let token = router.query.token
+
 
     const confirm = async () => {
-        let status = await apiTools.get('/register_final_verify/' + token)
+        let status = await apiTools.get('/register_final_verify/' + router.query.token)
 
         if (status.error === false) {
 
@@ -35,7 +34,7 @@ function Confirm() {
                     clearInterval(timer)
                     window.close()
                 setValid(`Подтверждение пройдено успешно, страница будет автоматически закрыта через ${sec}`)
-                sec--
+                sec -= 1
             }, 1000)
             console.log(status.value)
 
@@ -45,11 +44,14 @@ function Confirm() {
         }
     }
 
-    useEffect(() => {
-        if (!token)
+    useEffect( () => {
+        console.log(router.query)
+        if (!router.query.token)
             setValid('Неверный токен подтверждения, проверьте правильность ввода URL-адреса')
-        confirm()
-    }, []);
+        else {
+            confirm()
+        }
+    }, [router.query]);
 
     return(
         <div className={styles.mainbg}>

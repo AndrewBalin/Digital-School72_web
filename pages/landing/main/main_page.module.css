@@ -1,3 +1,5 @@
+
+
 .carousel {
     display: flex;
     overflow-x: auto;
@@ -23,7 +25,217 @@
     overflow-x: auto;
 }
 
-.bg {
+.mainbg {
+    width: 100vw;
+    background: #171720;
     overflow-y: revert;
     overflow-x: hidden;
 }
+
+.header {
+    height: 94px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.10);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    position: fixed;
+    z-index: 10;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+
+.label {
+    color: #FFF;
+    font-family: Effra;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-left: 180px;
+    margin-right: auto;
+}
+
+.outlineButtonText {
+    color: #FFF;
+
+    font-family: Effra;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    margin-right: 39px;
+    margin-left: auto;
+}
+
+.button {
+    width: 103px;
+    height: 47px;
+    border-radius: 5px;
+    background: #F06400;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #FFF;
+
+    font-family: Effra;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+    margin-right: 180px;
+}
+
+.page {
+    margin-top: 94px;
+    width: calc(100% - 94px);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -150px;
+}
+
+.action {
+    width: 600px;
+}
+
+.opg {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.rec {
+    width: 20px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.rec1 {
+    width: 20px;
+    height: auto;
+    background: #F06400;
+    flex: 1;
+}
+
+.rec2 {
+    width: 20px;
+    height: auto;
+    background: rgba(240, 100, 0, 0.80);
+    flex: 1;
+}
+
+.rec3 {
+    width: 20px;
+    height: auto;
+    background: rgba(240, 100, 0, 0.60);
+    flex: 1;
+}
+
+.op {
+    margin-left: 23px;
+    height: 100%;
+}
+
+.text1 {
+    color: #FFF;
+
+    font-family: Effra;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.text2 {
+    color: #FFF;
+
+    font-family: Effra;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.buttonsAc1 {
+    display: flex;
+    gap: 31px;
+    margin-top: 60px;
+}
+
+.button1Ac1 {
+    width: 185px;
+    height: 84px;
+
+    border-radius: 5px;
+    background: #F06400;
+
+    color: #FFF;
+
+    text-align: center;
+    font-family: Effra;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+
+.button2Ac1 {
+    width: 185px;
+    height: 84px;
+
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.26);
+
+    color: #FFF;
+
+    text-align: center;
+    font-family: Effra;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+}
+
+.action2 {
+    max-width: 639px;
+    max-height: 321px;
+}
+
+
+

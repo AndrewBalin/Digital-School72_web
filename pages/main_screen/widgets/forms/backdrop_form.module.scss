@@ -1,0 +1,70 @@
+.main {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputFieldGroup {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  gap: 5px;
+  margin-bottom: 30px;
+}
+
+.inputFieldTitle {
+  font-family: 'Effra';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+
+  margin-bottom: 10px;
+
+  color: #000000;
+}
+
+.inputField {
+  width: 100%;
+  height: 50px;
+
+  padding: 0px 10px 0px 10px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+
+  font-family: 'Effra';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 21px;
+
+  color: #000000;
+}
+
+.button {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+
+  height: 60px;
+  width: 250px;
+  background: #3FBD4C;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Effra;
+  font-style: normal;
+  font-weight: 100;
+  font-size: 20px;
+  line-height: 25px;
+  text-align: center;
+  color: #ffffff;
+
+  margin-bottom: 20px;
+}
